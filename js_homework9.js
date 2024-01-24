@@ -15,19 +15,25 @@ console.log(arr);
 // ДЗ № 2
 function findValueByKey(companyName, companyObject) {
     if (companyObject.name === companyName) {
-        return companyObject;
+        return {
+            name: companyObject.name,
+            type: companyObject.type,
+            platform: companyObject.platform,
+            sellsSolution: companyObject.sellsSolution
+        };
     }
 
     if (companyObject.clients) {
         for (let client of companyObject.clients) {
+            if (client.name === companyName) {
+                return {
+                    name: client.name,
+                    type: client.type,
+                    uses: client.uses,
+                    sells: client.sells
+                };
+            }
             let result = findValueByKey(companyName, client);
-            if (result) return result;
-        }
-    }
-
-    if (companyObject.partners) {
-        for (let partner of companyObject.partners) {
-            let result = findValueByKey(companyName, partner);
             if (result) return result;
         }
     }
@@ -79,3 +85,4 @@ const company = {
 };
 
 console.log(findValueByKey('Клієнт 1', company)); 
+
