@@ -18,22 +18,21 @@ function findValueByKey(companyName, companyObject) {
         return {
             name: companyObject.name,
             type: companyObject.type,
-            platform: companyObject.platform,
-            sellsSolution: companyObject.sellsSolution
+            uses: companyObject.uses,
+            sells: companyObject.sells,
         };
     }
 
     if (companyObject.clients) {
         for (let client of companyObject.clients) {
-            if (client.name === companyName) {
-                return {
-                    name: client.name,
-                    type: client.type,
-                    uses: client.uses,
-                    sells: client.sells
-                };
-            }
             let result = findValueByKey(companyName, client);
+            if (result) return result;
+        }
+    }
+
+    if (companyObject.partners) {
+        for (let partner of companyObject.partners) {
+            let result = findValueByKey(companyName, partner);
             if (result) return result;
         }
     }
@@ -43,7 +42,7 @@ function findValueByKey(companyName, companyObject) {
 
 const company = {
     name: 'Велика Компанія',
-    type:'Головна компанія',
+    type: 'Головна компанія',
     platform: 'Платформа для продажу квитків',
     sellsSolution: 'Рішення для продажу квитків',
     clients: [
@@ -70,19 +69,18 @@ const company = {
                             type: 'subSubCompany',
                             uses: 'Рішення для продажу квитків',
                             sells: 'Рішення для продажу квитків',
-                        }
-                    ]
-                }
-            ]
+                        },
+                    ],
+                },
+            ],
         },
         {
             name: 'Клієнт 2',
             type: 'subCompany',
             uses: 'ПО для продажу квитків',
-            sells: 'Рішення для продажу квитків'
-        }
-    ]
+            sells: 'Рішення для продажу квитків',
+        },
+    ],
 };
 
-console.log(findValueByKey('Клієнт 1', company)); 
-
+console.log(findValueByKey('Клієнт 1', company));
